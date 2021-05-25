@@ -85,10 +85,10 @@ export default function AddingForm (props) {
 				<div className="addingForm__btns">
 				<button onClick={()=> addTask()}
 						type="button" 
-						className="addingForm__btn">Add task</button>
+						className="btn btn-primary">Add task</button>
 					<button onClick={()=> closeModal()}
 						type="button" 
-						className="addingForm__btn">Cancel</button>
+						className="btn btn-primary">Cancel</button>
 				</div>
 			</form>
 		</div>

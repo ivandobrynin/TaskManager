@@ -5,16 +5,17 @@ export default function ProjectsButton (props) {
 	const [projects, setProjects] = useState([]);
 
 	useEffect(() => {
-		async function fn () {
-			const userService = new UserService();
-			const userProjects = await userService.getUserProject(props.currentUser.id);
-			if (userProjects) {
-				setProjects(userProjects.projects);
-			}
+		if (!props.currentUser) {
+			return;
 		}
-		fn();
-	}, [props.currentUser.id]);
-	//infinite loop
+		const fetchData = () => {
+			const userService = new UserService();
+			return userService.getUserProject(props.currentUser.id)
+			.then(response => setProjects(response.projects));
+		}
+		fetchData();
+	}, []);
+
 	const openDashboard = (e) => {
 		const projectId = e.target.getAttribute('data-id');
 		props.openDashboard(projectId);

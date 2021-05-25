@@ -98,10 +98,10 @@ export default function TaskModalEdit (props) {
 				<div className="taskModalEdit__btns">
 				<button onClick={() => saveChanges()}
 						type="button" 
-						className="btn btn-secondary">Save</button>
+						className="btn btn-primary">Save</button>
 					<button onClick={()=> closeTaskModalEdit()}
 						type="button" 
-						className="btn btn-secondary">Cancel</button>
+						className="btn btn-primary">Cancel</button>
 				</div>
 			</form>
 		</div>

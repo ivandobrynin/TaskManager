@@ -9,11 +9,11 @@
     cursor: grab;
     background-color: #e9e9e9;
     &:hover {
-        background-color: #cdf8de;
+        background-color: #dae8f5;
     }
     &__text {
         position: relative;
-        height: 60px;
+        height: 90px;
         z-index: 2;
     }
     &__title {
@@ -22,7 +22,7 @@
         word-break: break-all;
     }
     &__info {
-        height: 60px;
+        height:30px;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
@@ -74,7 +74,7 @@
         &:hover {
             i {
                 transform: scale(1.1);
-                color: #3baa64;
+                color: #e4a634;
             }
         }
     }

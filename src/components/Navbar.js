@@ -24,7 +24,7 @@ export default function Navbar(props) {
 							<li className="nav-item">
 								<a className="nav-link" href="#">Link</a>
 							</li>
-							{currentUser.roleId === 1
+							{currentUser?.roleId === 1
 							? 
 								<AdminButton 
 									showProjectsTable={showProjectsTable}

@@ -9,9 +9,9 @@ import DashBoard from './DashBoard';
 import '../css/interface.min.css';
 
 
-export default function Interface (props) {
+export default function WorkSpace (props) {
 
-	const [project, setProject] = useState([]);
+	const [project, setProject] = useState(props.project);
 	const [users, setUsers] = useState([]);
 	const [tasks, setTasks] = useState([]);
 	const [showUsers, setShowUsers] = useState(false);

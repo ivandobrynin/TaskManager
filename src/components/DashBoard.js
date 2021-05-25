@@ -15,23 +15,19 @@ export default function DashBoard (props) {
 	const [taskIdToChange, setTaskIdToChange] = useState('');
 	const [showModal, setShowModal] = useState(false);
 
-	useEffect(() => {
-		console.log("1");
-		async function fn () {
-			const taskService = new TaskService();
-			const tasks = await taskService.getAllTasksByProjectId(project.projectId);
-			setTasks(tasks);
-		}
-		fn();
-	}, [project.projectId]);
-	//[tasks] need. Infinite loop now
 	const updateTask = async (newStatus) => {
 		const taskService = new TaskService();
 		const data = {
 			"taskId": taskIdToChange,
 			"status": newStatus
 		};
-		return await taskService.taskStatusUpdate(data);
+		const update = await taskService.taskStatusUpdate(data);
+		if (update) {
+			const tasks = await taskService.getAllTasksByProjectId(project.projectId);
+			setTasks(tasks);
+		} else {
+			console.log("Error with updatind task")
+		}
 	}
 
 	const dragStartHandler = (e) => {
@@ -88,12 +84,15 @@ export default function DashBoard (props) {
 				projectId={project.projectId}
 				modalClassName={modalClassName}
 				users={users}/>
+			
 			<div className="container">
-				<button 
-					type="button" 
-					className="btn btn-secondary"
-					onClick={() => openModal()}>NewTask</button>
 				<div className="dashBoard">
+					<div className="dashBoard__btn">
+						<button 
+						type="button" 
+						className="btn btn-secondary"
+						onClick={() => openModal()}>NewTask</button>
+					</div>
 						<div className="dashBoard__wrapper">
 							<StatusList key="1"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 1 }/>
 							<StatusList key="2"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 2 }/>

@@ -30,7 +30,7 @@
     }
     &__title {
         font-size: 30px;
-        color: #3baa64;
+        color: #337ab7;
         text-transform: uppercase;
         text-align: center;
         font-weight: 500;
@@ -41,7 +41,7 @@
         margin-bottom: 20px;
         label {
             font-size: 16px;
-            color: #8d8d8d;
+            color: #337ab7;
         }
         textarea {
             padding: 10px 15px;
@@ -49,7 +49,7 @@
             width: 350px;
             height: 180px;
             box-shadow: 0 5px 15px #0000002f;
-            border: 2px solid  #3baa64;
+            border: 2px solid  #8d8d8d;
             border-radius: 6px;
         }
     }
@@ -58,15 +58,15 @@
         height: 80px;
         label {
             font-size: 16px;
-            color: #8d8d8d;
+            color: #337ab7;
         }
         select {
             width: 100%;
             box-shadow: 0 5px 15px #0000002f;
-            border: 2px solid  #3baa64;
+            border: 2px solid  #8d8d8d;
             border-radius: 6px;
             font-size: 16px;
-            color: #3baa64;
+            color: #337ab7;
         }
     }
     &__btns {
@@ -75,21 +75,9 @@
         display: flex;
         justify-content: space-around;
     }
-    &__btn {
-        text-transform: uppercase;
-        width: 120px;
-        height: 40px;
-        padding: 6px 12px;
-        background-color: #3baa64;;
-        color: white;
-        border: 1px solid white;
-        font-size: 12px;
-        border-radius: 6px;
-        &:hover {
-            background-color: #8d8d8d;
-            color: white;
-            border: 1px solid white;
-        }
+    button {
+       width: 100px;
+       height: 40px;
     }
     &__success {
         width: 100%;
