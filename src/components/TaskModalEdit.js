@@ -6,12 +6,10 @@ export default function TaskModalEdit (props) {
 
 	const [task, setTask] = useState(props.task);
 	const [title, setTitle] = useState(props.task.title);
-	const [projectId, setProjectId] = useState(props.task.projectId);
+	const [projectId] = useState(props.task.projectId);
 	const [userId, setUserId] = useState(props.task.userId);
-	const [status, setStatus] = useState(props.task.status);
-	const [usersOnProject, setUsersOnProject] = useState(props.usersOnProject);
-	const [taskDeveloper, setTaskDeveloper] = useState({});
-	const [confirm, setConfirm] = useState(false);
+	const [status] = useState(props.task.status);
+	const [usersOnProject] = useState(props.usersOnProject);
 
 	const onChangeHandler = (e) => {
 		setTitle(e.target.value);
@@ -76,8 +74,12 @@ export default function TaskModalEdit (props) {
 				<div className="taskModalEdit__textarea">
 					<label htmlFor="textarea">Task</label>
 					<textarea value={title} id="textarea" maxLength="200" onChange={(e)=> onChangeHandler(e)} type="text"></textarea>
-					{title.length >= 200 ? <div className="taskModalEdit__textAreaError">Max length is 200 characters</div> : null}
 				</div>
+				{title.length >= 200
+				? 
+					<div className="taskModalEdit__textAreaError">Max length is 200 characters</div>
+				:
+				<div className="taskModalEdit__textAreaError"></div>}
 				<div className="taskModalEdit__select">
 					<label htmlFor="select">Developer</label>
 					<select id="select" className="select"
@@ -92,15 +94,14 @@ export default function TaskModalEdit (props) {
 					</select>
 					<div className="taskModalEdit__success">Task was successfully changed</div>
 					<div className="taskModalEdit__error">Something wrong</div>
-
 				</div>
 				<div className="taskModalEdit__btns">
 				<button onClick={() => saveChanges()}
 						type="button" 
-						className="taskModalEdit__btn">Save changes</button>
+						className="btn btn-secondary">Save</button>
 					<button onClick={()=> closeTaskModalEdit()}
 						type="button" 
-						className="taskModalEdit__btn">Cancel</button>
+						className="btn btn-secondary">Cancel</button>
 				</div>
 			</form>
 		</div>

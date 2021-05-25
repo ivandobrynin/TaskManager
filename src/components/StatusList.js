@@ -1,19 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import '../css/statusList.min.css';
 import Task from './Task.js';
 
 export default function StatusList ({statusListProps, statusId}) {
 	const [currentUser] = useState(statusListProps.currentUser);
 	const [tasks, setTasks] = useState(statusListProps.tasks);
-	const [usersOnProject, setUsersOnProject] = useState(statusListProps.usersOnProject);
+	const [usersOnProject] = useState(statusListProps.usersOnProject);
 	
 	if (statusListProps.tasks !== tasks) {
 		setTasks(statusListProps.tasks);
 	}
 
-	const refreshDashBoard = () => {
-		statusListProps.refreshDashBoard();
-	}
 	const dragStartHandler = (e) => {
 		statusListProps.dragStartHandler(e)
 	}
@@ -66,8 +63,7 @@ export default function StatusList ({statusListProps, statusId}) {
 						key={task.id} 
 						task={task}
 						showDeveloper={showDeveloper}
-						usersOnProject={usersOnProject}
-						refreshDashBoard={() => refreshDashBoard()}/>
+						usersOnProject={usersOnProject}/>
 				})}
 		</div>
 	)

@@ -1,77 +1,41 @@
 import React, {useState, useEffect} from 'react';
+import AddingForm from '../components/AddingForm';
 import StatusList from './StatusList.js';
-import UserBar from './UserBar';
 import TaskService from '../services/TaskService';
-import ProjectService from '../services/ProjectService';
 import '../css/dashboard.min.css';
 
 
-export default function DashBoard ({dashboardProps}) {
-	console.log("dashboardProps", dashboardProps)
-	const taskService = new TaskService();
-	const [currentUser, setCurrentUser] = useState(dashboardProps.currentUser);
-	const [tasks, setTasks] = useState(dashboardProps.tasks);
-	const [project, setProject] = useState(dashboardProps.project);
-	const [usersOnProject, setUsersOnProject] = useState(dashboardProps.usersOnProject);
+export default function DashBoard (props) {
+
+	
+	const [currentUser] = useState(props.currentUser);
+	const [tasks, setTasks] = useState(props.tasks);
+	const [project] = useState(props.project);
+	const [users] = useState(props.users);
 	const [taskIdToChange, setTaskIdToChange] = useState('');
+	const [showModal, setShowModal] = useState(false);
 
-	// useEffect(() => {
-	// 	if (dashboardProps.tasks !== tasks) {
-	// 		setTasks(dashboardProps.tasks);
-	// 	}
-	// })
-	const refreshDashBoard = async () => {
-		if (currentUser.roleId !== 1) {
-			
-			const projectId = project[0].id;
-			const newTasks = await taskService.getAllTasksByProjectId(projectId);
-			if (newTasks !== tasks) {
-				setTasks(newTasks);
-				const localData = JSON.parse(localStorage.getItem("localData"));
-				if (localData) {
-					localData.tasks = newTasks;
-					localStorage.setItem("localData", JSON.stringify(localData));
-				}
-			} else {
-				console.log('Error with refreshing dashboard')
-			}
-		} else {
-			const projectService = new ProjectService();
-			const allProjects = await projectService.getAllProjects();
-			let arr = [];
-			allProjects.map(async (project) => {
-				let id = project.id
-				let allTasks = await taskService.getAllTasksByProjectId(id);
-				arr.push(...allTasks);
-			});
-			if (arr !== tasks) {
-				setTasks(arr);
-				const localData = JSON.parse(localStorage.getItem("localData"));
-				if (localData) {
-					localData.tasks = arr;
-					localStorage.setItem("localData", JSON.stringify(localData));
-				}
-			} else {
-				console.log('Error with refreshing dashboard')
-			}
+	useEffect(() => {
+		console.log("1");
+		async function fn () {
+			const taskService = new TaskService();
+			const tasks = await taskService.getAllTasksByProjectId(project.projectId);
+			setTasks(tasks);
 		}
-	}
-
-	const dragStartHandler = (e) => {
-		setTaskIdToChange(e.target.id);
-	}
-
+		fn();
+	}, [project.projectId]);
+	//[tasks] need. Infinite loop now
 	const updateTask = async (newStatus) => {
+		const taskService = new TaskService();
 		const data = {
 			"taskId": taskIdToChange,
 			"status": newStatus
 		};
-		const update = await taskService.taskStatusUpdate(data);
-		if (update === 1) {
-			refreshDashBoard();
-		} else {
-			console.log("Error with updating");
-		}
+		return await taskService.taskStatusUpdate(data);
+	}
+
+	const dragStartHandler = (e) => {
+		setTaskIdToChange(e.target.id);
 	}
 
 	const dragOverHandler = (e) => {
@@ -93,22 +57,25 @@ export default function DashBoard ({dashboardProps}) {
 		updateTask(newStatus);
 	}
 
-	const logout = () => {
-		dashboardProps.logout();
+	const openModal = () => {
+		setShowModal(true);
 	}
-	const selectProjectId = (index) => {
-		dashboardProps.selectProjectId(index);
+
+	const closeModal = () => {
+		setShowModal(false);
 	}
 	const tasksToShow = currentUser.roleId === 3 
 	? tasks.filter(task => task.userId === currentUser.id)
 	: tasks;
 
+	let modalClassName;
+	showModal ? modalClassName = 'addingForm active' : modalClassName = 'addingForm';
+
 	let statusListProps = {
 		tasks: tasksToShow,
 		currentUser: currentUser,
 		project: project,
-		usersOnProject: usersOnProject,
-		refreshDashBoard: () => refreshDashBoard(),
+		usersOnProject: users,
 		dragStartHandler:  (e) => dragStartHandler(e),
 		dropHandler: (e) => dropHandler(e),
 		dragOverHandler: (e) => dragOverHandler(e),
@@ -116,19 +83,24 @@ export default function DashBoard ({dashboardProps}) {
 	}
 	return (
 		<>
-				{/* <UserBar 
-					currentUser={currentUser} 
-					logout={logout} usersOnProject={usersOnProject} 
-					project={project}
-					refreshDashBoard={() => refreshDashBoard()}
-					selectProjectId={(index) => selectProjectId(index)}/> */}
+			<AddingForm
+				closeModal={() => closeModal()}
+				projectId={project.projectId}
+				modalClassName={modalClassName}
+				users={users}/>
+			<div className="container">
+				<button 
+					type="button" 
+					className="btn btn-secondary"
+					onClick={() => openModal()}>NewTask</button>
 				<div className="dashBoard">
-					<div className="dashBoard__wrapper">
-						<StatusList key="1"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 1 }/>
-						<StatusList key="2"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 2 }/>
-						<StatusList key="3"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 3 }/>
+						<div className="dashBoard__wrapper">
+							<StatusList key="1"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 1 }/>
+							<StatusList key="2"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 2 }/>
+							<StatusList key="3"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 3 }/>
+						</div>
 					</div>
-				</div>
+			</div>
 		</>
 	)
 }

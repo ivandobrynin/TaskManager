@@ -1,39 +1,32 @@
-import React, {Component} from 'react';
+import React from 'react';
 import '../css/confirm.min.css';
 
-export default class Confirm extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			showConfirm: false
-		}
-	}
-	deleteTask = (e) => {
-		this.props.deleteTask(e);
+export default function Confirm (props) {
+
+	const deleteTask = (e) => {
+		props.deleteTask(e);
 	};
 
-	closeConfirm = () => {
-		this.props.closeConfirm();
+	const closeConfirm = () => {
+		props.closeConfirm();
 	}
 
-	render() {
-		const {data} = this.props;
-		return (
-			<div className={this.props.confirmClassName}>
-					<div className="confirm__modal">
-						<div className="confirm__title">
-							Delete task?
-						</div>
-						<div className="confirm__btns">
-							<button data-id={data} onClick={(e) => this.deleteTask(e)}
-								type="button" 
-								className="confirm__btn">Delete</button>
-							<button onClick={()=> this.closeConfirm()}
-								type="button" 
-								className="confirm__btn">Cancel</button>
-						</div>
+	const {taskId} = props;
+	return (
+		<div className={props.confirmClassName}>
+				<div className="confirm__modal">
+					<div className="confirm__title">
+						Delete task?
 					</div>
-			</div>
-		)
-	}
+					<div className="confirm__btns">
+						<button data-id={taskId} onClick={(e) => deleteTask(e)}
+							type="button" 
+							className="confirm__btn">Delete</button>
+						<button onClick={()=> closeConfirm()}
+							type="button" 
+							className="confirm__btn">Cancel</button>
+					</div>
+				</div>
+		</div>
+	)
 }

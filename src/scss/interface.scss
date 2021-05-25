@@ -1,0 +1,22 @@
+ .interface {
+	 width: 100%;
+	 height: 100vh;
+	 display: flex;
+	 flex: 1 0.333% 0.666%;
+	 border-top: 1px solid #8d8d8d;
+	 &__sidebar {
+		 padding: 20px;
+		 border-right: 1px solid #8d8d8d;
+		 background-color: rgb(199, 199, 199);
+		 display: flex;
+		 flex-direction: column;
+		 align-items: center;
+		 button {
+			 width: 140px;
+			 margin-top: 20px;
+		 }
+	 }
+	 &__dashboard {
+		 background-color: #e9e9e9;
+	 }
+ }

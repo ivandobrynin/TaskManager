@@ -18,6 +18,7 @@
     overflow: hidden;
     transform: scale(0);
     &__modal {
+        position: relative;
         width: 400px;
         height: 450px;
         padding: 15px 15px;
@@ -35,7 +36,6 @@
         font-weight: 500;
     }
     &__textarea {
-        position: relative;
         width: 350px;
         height: 200px;
         margin-bottom: 20px;
@@ -92,18 +92,22 @@
         }
     }
     &__success {
-        display: none;
-        height: 25px;
-        margin-top: 8px;
-        margin-bottom: 12px;
+        width: 100%;
+		display: none;
+		position: absolute;
+		bottom: 64px;
+		left: 50%;
+		transform: translateX(-50%);
         color: green;
         text-align: center;
     }
 	&__error {
+		width: 100%;
 		display: none;
-		height: 25px;
-		margin-top: 8px;
-		margin-bottom: 12px;
+		position: absolute;
+		bottom: 64px;
+		left: 50%;
+		transform: translateX(-50%);
 		color: red;
 		text-align: center;
 	}
