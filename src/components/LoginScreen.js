@@ -1,60 +1,55 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import '../css/loginScreen.min.css';
 
-export default class LoginScreen extends Component {
-	constructor (props) {
-			super(props);
+export default function LoginScreen (props) {
 
-			this.state = {
-					login: '',
-					password: ''
-			}
-	}
+	const [login, setLogin] = useState('');
+	const [password, setPassword] = useState('');
 
-	changeLog = (e) => {
-			this.setState({
-				login: e.target.value
-			});
+	const changeLog = (e) => {
+		setLogin(e.target.value);
 	}
-	changePass = (e) => {
-		this.setState({
-			password: e.target.value
-		});
+	const changePass = (e) => {
+		setPassword(e.target.value);
 	}
-	sendData = () => {
+	const authorization = () => {
 		let data = {
-			login: this.state.login,
-			password: this.state.password
+			login: login,
+			password: password
 		};
-		this.props.sendData(data);
+		props.authorization(data);
 	}
-	onHandleKeyPress = (event) => {
+
+	const onHandleKeyPress = (event) => {
 		if (event.key === 'Enter') {
-				this.sendData();
+			authorization();
 		}
 	}
 		
-	render() {
 		return (
 			<div className="login">
 				<div className="login__content">
-					<h1 className="login__title">best task manager in the world</h1>
-					<div className="login__wrapper" onKeyPress={this.onHandleKeyPress}>
+					<h1 className="login__title">zm</h1>
+					<div className="login__wrapper" onKeyPress={onHandleKeyPress}>
 						<input 
-							onChange={this.changeLog}
+							onChange={changeLog}
 							className="login__input" 
 							placeholder="Login"></input>
 						<input 
-							onChange={this.changePass}
+							onChange={changePass}
 							className="login__input" 
 							placeholder="Password"></input>
-						<button 
-							onClick={() => this.sendData()}
-							type="button" 
-							className="login__btn">Log in</button>
+						<div className="login__btns">
+							<button
+								type="button" 
+								className="btn btn-outline-secondary">Sign up</button>
+							<button 
+								onClick={() => authorization()}
+								type="button" 
+								className="btn btn-secondary">Sign in</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		)
-	}
 };

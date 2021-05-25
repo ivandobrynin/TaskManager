@@ -7,11 +7,8 @@ import '../css/task.min.css';
 export default function Task (props) {
 	const {task, usersOnProject} = props;
 
-	const [id, setId] = useState(props.task.id);
-	const [title, setTitle] = useState(props.task.id);
-	const [projectId, setpPojectId] = useState(props.task.id);
-	const [userId, setUserId] = useState(props.task.id);
-	const [showDeveloper, setShowDeveloper] = useState(props.showDeveloper);
+
+	const [showDeveloper] = useState(props.showDeveloper);
 	const [showMoreInformation, setShowMoreInformation] = useState(false);
 	const [taskHasBeenDeleted, setTaskHasBeenDeleted] = useState(false);
 	const [showTaskModalEdit, setShowTaskModalEdit] = useState(false);
@@ -36,16 +33,9 @@ export default function Task (props) {
 		const res =  await taskService.deleteTask(taskId);
 		if (res) {
 			setTaskHasBeenDeleted(true);
-			setTimeout(() => {
-				refreshDashBoard();
-			}, 500)
 		} else {
 			console.log("Что-то пошло не туда")
 		}
-	};
-
-	const refreshDashBoard = () => {
-		props.refreshDashBoard();
 	};
 
 	const showMore = (e) => {
@@ -69,7 +59,6 @@ export default function Task (props) {
 	
 	const closeTaskModalEdit = () => {
 		setShowTaskModalEdit(false);
-		refreshDashBoard();
 	}
 
 	const showConfirm = () => {
@@ -97,28 +86,31 @@ export default function Task (props) {
 	return (
 		<>
 			{showConfirmModal
-			? <Confirm 
-				confirmClassName={confirmClassName} 
-				data={task.id}
-				deleteTask={(e) => deleteTask(e)} 
-				closeConfirm={() => closeConfirm()} />
+			? 
+				<Confirm 
+					confirmClassName={confirmClassName} 
+					taskId={task.id}
+					deleteTask={(e) => deleteTask(e)} 
+					closeConfirm={() => closeConfirm()}/>
 			: null }
 			{showTaskModalEdit
 				? <TaskModalEdit 
 					task={task} 
 					usersOnProject={usersOnProject} 
 					taskModalClassName={taskModalClassName} 
-					closeTaskModalEdit={()=> closeTaskModalEdit()} 
-					refreshDashBoard={() => refreshDashBoard()}/>
+					closeTaskModalEdit={()=> closeTaskModalEdit()}/>
 			: null}
 			<div draggable={true}
-			key={task.id}
-			id={task.id}
-			data-status={task.status}
-			className={taskClassName}>
+				key={task.id}
+				id={task.id}
+				data-status={task.status}
+				className={taskClassName}>
 			<div className="task__text">
-				{taskHasBeenDeleted? <div className="task__deleted">Task has been deleted</div> : <div className="task__title">{taskText}</div>}
-				
+				{taskHasBeenDeleted
+				? 
+				<div className="task__deleted">Task has been deleted</div> 
+				: 
+				<div className="task__title">{taskText}</div>}
 				<div className="task__arrow">
 					<i className="fa fa-arrow-down" aria-hidden="true" onClick={(e) => showMore(e)}></i>
 				</div>
@@ -127,11 +119,11 @@ export default function Task (props) {
 			<div className="task__info">
 				<div className="task__executor">
 					{showDeveloper === true 
-					? <div>
-							<div className="task__subtitle">Исполнитель: {userName} </div> 
-						</div>
-					: null
-					}
+					? 
+					<div>
+						<div className="task__subtitle">Исполнитель: {userName} </div> 
+					</div>
+					: null}
 				</div>
 				<div className="task__icons">
 					<div className="task__edit">
