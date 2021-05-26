@@ -6,7 +6,7 @@ export default function Navbar(props) {
 
 	const [currentUser] = useState(props.currentUser);
 	
-	const {showProjectsTable, showUsersTable, openDashboard, logout} = props;
+	const {showProjectsTable, showUsersTable, openStatusList, logout} = props;
 	
 	return (
 		<>
@@ -32,7 +32,7 @@ export default function Navbar(props) {
 							: 
 								<ProjectsButton 
 									currentUser={currentUser}
-									openDashboard={openDashboard}/>}
+									openStatusList={openStatusList}/>}
 						</ul>
 						<button type="button" className="btn btn-secondary"
 						onClick={logout}>Logout</button>

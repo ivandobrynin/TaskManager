@@ -14,11 +14,11 @@ export default function ProjectsButton (props) {
 			.then(response => setProjects(response.projects));
 		}
 		fetchData();
-	}, []);
+	}, [props.currentUser]);
 
-	const openDashboard = (e) => {
+	const openStatusList = (e) => {
 		const projectId = e.target.getAttribute('data-id');
-		props.openDashboard(projectId);
+		props.openStatusList(projectId);
 	}
 	return (
 		<li className="nav-item dropdown">
@@ -28,7 +28,7 @@ export default function ProjectsButton (props) {
 		<ul className="dropdown-menu" aria-labelledby="navbarDropdown">
 			{projects.map(project => {
 				return (
-					<li onClick={(e) => openDashboard(e)}
+					<li onClick={(e) => openStatusList(e)}
 							key={project.id} 
 							data-id={project.id}>
 						<div data-id={project.id} className="dropdown-item">{project.name}</div></li>

@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import {Context} from '../components/Context';
 import TaskService from '../services/TaskService';
 import '../css/taskModalEdit.min.css';
 
 export default function TaskModalEdit (props) {
+	const {fetchTasks} = useContext(Context);
 
 	const [task, setTask] = useState(props.task);
 	const [title, setTitle] = useState(props.task.title);
@@ -33,16 +35,17 @@ export default function TaskModalEdit (props) {
 		const res = await service.editTask(data);
 		if (res) {
 			success.style.display = 'block';
-			setTimeout(() => {
-				success.style.display = 'none';
-				setTask('');
-				setTitle('');
-				setUserId(null);
-				closeTaskModalEdit();
-			}, 1000);
+			fetchTasks();
 		} else {
 			error.style.display = 'block';
 		}
+		setTimeout(() => {
+			success.style.display = 'none';
+			setTask('');
+			setTitle('');
+			setUserId(null);
+			closeTaskModalEdit();
+		}, 1000);
 	}
 	
 	const closeTaskModalEdit = () => {

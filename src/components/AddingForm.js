@@ -1,14 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
+import {Context} from './Context';
 import TaskService from '../services/TaskService';
 import '../css/addingForm.min.css';
 
 export default function AddingForm (props) {
-
-	const [users] = useState(props.users);
-	const [projectId] = useState(props.projectId);
-	const [title, setTitle] = useState('');
-	const [userId, setUserId] = useState('');
 	
+	const [users, setUsers] = useState(props.users);
+	const [title, setTitle] = useState('');
+	const [userId, setUserId] = useState(null);
+
+	useEffect(() => {
+		if (props.users !== users) {
+			setUsers(props.users);
+		}
+	}, [props.users]);
+
 	const onChangeHandler = (e) => {
 		setTitle(e.target.value);
 	}
@@ -17,34 +23,14 @@ export default function AddingForm (props) {
 		setUserId(e.target.value);
 	}
 
-	const addTask = async () => {
-		try {
-			const data = {
-				title: title,
-				projectId: projectId,
-				userId: userId,
-				status: 1
-			};
-			const taskService = new TaskService();
-			const success = document.querySelector(".addingForm__success");
-			const res = await taskService.postNewTask(data);
-			if (res) {
-				success.style.display = 'block';
-			} 
-			setTimeout(() => {
-				success.style.display = 'none';
-				setTitle('');
-				setUserId(null);
-				closeModal();
-			}, 1000);
-		} catch(e) {
-			console.log(e);
-			console.log("Error with adding new task");
-		}
+	const addTask = () => {
+		props.addTask(title, userId);
+		setTitle('');
 	}
-	
+
 	const closeModal = () => {
 		props.closeModal();
+		setTitle('');
 	}
 
 	let developers = users.filter(user => user.roleId === 3);
@@ -60,7 +46,7 @@ export default function AddingForm (props) {
 				<div className="addingForm__title">New Task</div>
 				<div className="addingForm__textarea">
 					<label htmlFor="textarea">Enter your task here</label>
-					<textarea id="textarea" maxLength="200" onChange={(e)=> onChangeHandler(e)} type="text"></textarea>
+					<textarea id="textarea" value={title} maxLength="200" onChange={(e)=> onChangeHandler(e)} type="text"></textarea>
 				</div>
 				{title.length >= 200 
 				? 
