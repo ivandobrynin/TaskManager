@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Error from '../components/Error';
 import UserService from '../services/UserService';
 import LoginScreen from '../components/LoginScreen';
-import WorkSpace from '../components/WorkSpace';
+import DashBoard from '../components/DashBoard';
 import '../css/index.css';
 
 export default function App () {
@@ -47,7 +47,7 @@ export default function App () {
 				roleId: user.roleId
 			}
 			localStorage.setItem("currentUser", JSON.stringify(userData));
-			setCurrentUser(user);
+			setCurrentUser(userData);
 			setIsChecked(true);
 			setLoginFailed(false);
 		} catch(e) {
@@ -57,8 +57,6 @@ export default function App () {
 			setLoginFailed(true);
 		}
 	}
-	console.log(isChecked);
-	console.log(loginFailed);
 	if (loginFailed === true) {
 			return (
 					<Error/>
@@ -67,7 +65,8 @@ export default function App () {
 	return (
 			<>
 				{isChecked === true
-					? <WorkSpace currentUser={currentUser} logout={() => logout()}/> 
+					? <DashBoard currentUser={currentUser} logout={() => logout()}/>
+					// ? <WorkSpace currentUser={currentUser} logout={() => logout()}/> 
 					: <LoginScreen authorization={(data) => authorization(data)}/>}
 			</>
 	)

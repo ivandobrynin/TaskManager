@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import TaskService from '../services/TaskService';
 import TaskModalEdit from '../components/TaskModalEdit';
 import Confirm from '../components/Confirm';
+import {Context} from '../components/Context';
 import '../css/task.min.css';
 
 export default function Task (props) {
 	const {task, usersOnProject} = props;
+	const {fetchTasks} = useContext(Context);
 
 
 	const [showDeveloper] = useState(props.showDeveloper);
@@ -26,17 +28,6 @@ export default function Task (props) {
 				return undefined;
 			};
 	}
-
-	const deleteTask = async (e) => {
-		const taskId = e.target.getAttribute('data-id');
-		const taskService = new TaskService();
-		const res =  await taskService.deleteTask(taskId);
-		if (res) {
-			setTaskHasBeenDeleted(true);
-		} else {
-			console.log("Что-то пошло не туда")
-		}
-	};
 
 	const showMore = (e) => {
 		const elem = e.target.parentNode.parentNode.parentNode;
@@ -69,6 +60,25 @@ export default function Task (props) {
 		setShowConfirmModal(false);
 	}
 	
+	
+	const deleteTask = async (e) => {
+		try {
+			const taskId = e.target.getAttribute('data-id');
+			const taskService = new TaskService();
+			const res =  await taskService.deleteTask(taskId);
+			if (res) {
+				setTaskHasBeenDeleted(true);
+				fetchTasks();
+				closeConfirm();
+			} else {
+				console.log("Что-то пошло не туда")
+			}
+		} catch (e) {
+			console.log(e);
+			console.log("Error with deleting task");
+		}
+
+	};
 	const userName = task.user ? task.user.firstName + ' ' + task.user.lastName : '';
 	let taskClassName = getClassName(task.status);
 	let taskText;
