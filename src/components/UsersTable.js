@@ -1,8 +1,13 @@
-import React from 'react';
-
+import React, {useState} from 'react';
+import AssignForm from '../components/AssignForm';
 export default function UsersTable(props) {
 
+	const [showAssignModal, setShowAssignModal] = useState(false)
 	const {users} = props;
+
+	const openAssignModal = () => {
+		setShowAssignModal(true);
+	}
 
 	return (
 		<table className="table table-striped">
@@ -24,7 +29,10 @@ export default function UsersTable(props) {
 							<td>{user.firstName}</td>
 							<td>{user.lastName}</td>
 							<td>
-							<button type="button" className="btn btn-primary btn-sm">View</button>
+							<button
+								onClick={() => openAssignModal()}
+								type="button" 
+								className="btn btn-primary btn-sm">View</button>
 							</td>
 						</tr>
 					)

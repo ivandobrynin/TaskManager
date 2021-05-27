@@ -69,10 +69,12 @@ export default function Task (props) {
 			if (res) {
 				setTaskHasBeenDeleted(true);
 				fetchTasks();
-				closeConfirm();
 			} else {
-				console.log("Что-то пошло не туда")
+				console.log("Что-то пошло не туда");
 			}
+			setTimeout(() => {
+				closeConfirm();
+			}, 500)
 		} catch (e) {
 			console.log(e);
 			console.log("Error with deleting task");

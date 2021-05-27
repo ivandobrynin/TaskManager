@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../css/statusList.min.css';
 import Task from './Task.js';
 
@@ -7,9 +7,13 @@ export default function StatusList ({statusListProps, statusId}) {
 	const [tasks, setTasks] = useState(statusListProps.tasks);
 	const [usersOnProject] = useState(statusListProps.usersOnProject);
 	
-	if (statusListProps.tasks !== tasks) {
-		setTasks(statusListProps.tasks);
-	}
+	useEffect(() => {
+		console.log("2")
+		if (statusListProps.tasks !== tasks) {
+			setTasks(statusListProps.tasks);
+		}
+	}, [statusListProps.tasks, tasks]);
+
 
 	const dragStartHandler = (e) => {
 		statusListProps.dragStartHandler(e)

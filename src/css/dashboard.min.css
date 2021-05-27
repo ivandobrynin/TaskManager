@@ -1,1 +1,1 @@
-.dashBoard{margin:0 auto;padding:15px 90px}.dashBoard__btn{padding:0 15px;margin:0 auto;margin-bottom:15px}.dashBoard__btn button{width:100px;height:40px}.dashBoard__wrapper{display:flex;justify-content:space-around;align-items:unset}
+.dashBoard{margin:0 auto;padding:15px 90px}.dashBoard__wrapper{display:flex;flex-direction:column;align-items:center}.dashBoard__wrapper_btn{padding:0 15px;margin:0 auto;margin-bottom:15px}.dashBoard__wrapper_btn button{width:100px;height:40px}.dashBoard__wrapper_content{display:flex}

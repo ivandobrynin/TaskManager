@@ -39,15 +39,10 @@ export default function LoginScreen (props) {
 							onChange={changePass}
 							className="login__input" 
 							placeholder="Password"></input>
-						<div className="login__btns">
-							<button
-								type="button" 
-								className="btn btn-outline-secondary">Sign up</button>
 							<button 
 								onClick={() => authorization()}
 								type="button" 
 								className="btn btn-secondary">Sign in</button>
-						</div>
 					</div>
 				</div>
 			</div>

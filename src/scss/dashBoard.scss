@@ -1,18 +1,21 @@
 .dashBoard {
     margin: 0 auto;
     padding: 15px 90px;
-    &__btn {
-        padding: 0 15px;
-        margin: 0 auto;
-        margin-bottom: 15px;
-        button {
-            width: 100px;
-            height: 40px;
-        }
-    }
     &__wrapper {
         display: flex;
-        justify-content: space-around;
-        align-items: unset;
+        flex-direction: column;
+        align-items: center;
+        &_btn {
+            padding: 0 15px;
+            margin: 0 auto;
+            margin-bottom: 15px;
+            button {
+                width: 100px;
+                height: 40px;
+            }
+        }
+        &_content {
+            display: flex;
+        }
     }
 }

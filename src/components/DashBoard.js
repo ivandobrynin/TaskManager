@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Context} from './Context';
 import Navbar from './Navbar';
 import UsersTable from './UsersTable';
@@ -19,6 +19,7 @@ export default function DashBoard (props) {
 	const [currentUser] = useState(props.currentUser);
 	const [tasks, setTasks] = useState([]);
 	const [project, setProject] = useState({});
+	const [allProjects, setAllProjects] = useState([]);
 	const [users, setUsers] = useState([]);
 	const [taskIdToChange, setTaskIdToChange] = useState('');
 	const [showUsers, setShowUsers] = useState(false);
@@ -46,17 +47,19 @@ export default function DashBoard (props) {
 	}
 
 	const showProjectsTable = async () => {
-		const allProjects =  await projectService.getAllProjects();
-		setProject(allProjects);
+		const projects =  await projectService.getAllProjects();
+		setAllProjects(projects);
 		setShowUsers(false);
 		setShowProjects(true);
+		setShowStatusList(false);
 	}
 
 	const showUsersTable = async () => {
 		const allUsers = await userService.getAllUsers();
 		setUsers(allUsers);
-		setShowProjects(false)
 		setShowUsers(true);
+		setShowProjects(false);
+		setShowStatusList(false);
 	}
 
 	const openStatusList = async (projectId) => {
@@ -66,6 +69,8 @@ export default function DashBoard (props) {
 			setProject(project);
 			setTasks(tasks);
 			setUsers(project.users);
+			setShowProjects(false);
+			setShowUsers(false);
 			setShowStatusList(true);
 		} catch(e) {
 			console.log(e);
@@ -182,24 +187,26 @@ export default function DashBoard (props) {
 					users={users}/>
 				<div className="container">
 					<div className="dashBoard">
-						<div className="dashBoard__btn">
-							<button 
-							type="button" 
-							className="btn btn-secondary"
-							onClick={() => openModal()}>NewTask</button>
-						</div>
+
 							<div className="dashBoard__wrapper">
-								{(showProjects && !showUsers) ? <ProjectsTable project={project}/> : null}
+								{(showProjects && !showUsers) ? <ProjectsTable openStatusList={(projectId) => openStatusList(projectId)} allProjects={allProjects}/> : null}
 								{(showUsers && !showProjects) ? <UsersTable users={users}/> : null}
 								{showStatusList
 								?	
 								<>
+								<div className="dashBoard__wrapper_btn">
+									<button 
+										type="button" 
+										className="btn btn-secondary"
+										onClick={() => openModal()}>NewTask</button>
+								</div>
+								<div className="dashBoard__wrapper_content">
 									<StatusList key="1"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 1 }/>
 									<StatusList key="2"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 2 }/>
 									<StatusList key="3"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 3 }/>
+								</div>
 								</>
 								: null}
-
 							</div>
 						</div>
 				</div>

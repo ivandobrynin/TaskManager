@@ -1,1 +1,1 @@
-.statusList{display:flex;flex-direction:column;color:#8d8d8d;box-shadow:0 5px 15px #8d8d8d;border-radius:10px;width:340px;height:100%;padding:10px 10px}.statusList__title{text-align:center;font-size:20px;font-weight:600}
+.statusList{display:flex;flex-direction:column;color:#8d8d8d;box-shadow:0 5px 15px #8d8d8d;border-radius:10px;width:340px;height:100%;padding:10px 10px;margin:10px 15px}.statusList__title{text-align:center;font-size:20px;font-weight:600}
