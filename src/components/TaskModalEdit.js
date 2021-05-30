@@ -4,15 +4,14 @@ import TaskService from '../services/TaskService';
 import '../css/taskModalEdit.min.css';
 
 export default function TaskModalEdit (props) {
-	const {fetchTasks} = useContext(Context);
+	const {users} = useContext(Context);
+	const {currentUser} = useContext(Context);
 
 	const [task, setTask] = useState(props.task);
 	const [title, setTitle] = useState(props.task.title);
 	const [projectId] = useState(props.task.projectId);
 	const [userId, setUserId] = useState(props.task.userId);
 	const [status] = useState(props.task.status);
-	const [usersOnProject] = useState(props.usersOnProject);
-
 	const onChangeHandler = (e) => {
 		setTitle(e.target.value);
 	}
@@ -35,7 +34,6 @@ export default function TaskModalEdit (props) {
 		const res = await service.editTask(data);
 		if (res) {
 			success.style.display = 'block';
-			fetchTasks();
 		} else {
 			error.style.display = 'block';
 		}
@@ -52,7 +50,7 @@ export default function TaskModalEdit (props) {
 		props.closeTaskModalEdit();
 	}
 
-	const justDevelopers = usersOnProject.filter(user => user.roleId === 3);
+	const justDevelopers = users.filter(user => user.roleId === 3);
 
 	let selectedDeveloper;
 	let selectedDeveloperId;

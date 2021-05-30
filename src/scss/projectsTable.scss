@@ -1,0 +1,18 @@
+.projectsTable {
+	a {
+		display: block;
+		width: 80px;
+		height: 30px;
+		background-color: #808080;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		border-radius: 5px;
+		text-decoration: none;
+		&:hover {
+			background-color: black;
+		}
+	}
+}

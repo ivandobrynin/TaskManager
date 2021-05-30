@@ -6,11 +6,9 @@ import {Context} from '../components/Context';
 import '../css/task.min.css';
 
 export default function Task (props) {
-	const {task, usersOnProject} = props;
-	const {fetchTasks} = useContext(Context);
+	const {task} = props;
+	const {fetchTasks, users} = useContext(Context);
 
-
-	const [showDeveloper] = useState(props.showDeveloper);
 	const [showMoreInformation, setShowMoreInformation] = useState(false);
 	const [taskHasBeenDeleted, setTaskHasBeenDeleted] = useState(false);
 	const [showTaskModalEdit, setShowTaskModalEdit] = useState(false);
@@ -69,10 +67,12 @@ export default function Task (props) {
 			if (res) {
 				setTaskHasBeenDeleted(true);
 				fetchTasks();
-				closeConfirm();
 			} else {
-				console.log("Что-то пошло не туда")
+				console.log("Что-то пошло не туда");
 			}
+			setTimeout(() => {
+				closeConfirm();
+			}, 500)
 		} catch (e) {
 			console.log(e);
 			console.log("Error with deleting task");
@@ -93,6 +93,8 @@ export default function Task (props) {
 
 	let taskModalClassName;
 	showTaskModalEdit ? taskModalClassName = 'taskModalEdit active' : taskModalClassName = 'taskModalEdit';
+
+	const showDeveloper = true
 	return (
 		<>
 			{showConfirmModal
@@ -104,11 +106,11 @@ export default function Task (props) {
 					closeConfirm={() => closeConfirm()}/>
 			: null }
 			{showTaskModalEdit
-				? <TaskModalEdit 
-					task={task} 
-					usersOnProject={usersOnProject} 
-					taskModalClassName={taskModalClassName} 
-					closeTaskModalEdit={()=> closeTaskModalEdit()}/>
+			? <TaskModalEdit 
+				task={task} 
+				users={users} 
+				taskModalClassName={taskModalClassName} 
+				closeTaskModalEdit={()=> closeTaskModalEdit()}/>
 			: null}
 			<div draggable={true}
 				key={task.id}

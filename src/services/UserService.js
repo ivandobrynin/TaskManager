@@ -23,12 +23,12 @@ export default class UserService {
 			}
 			return await res.json();
 		}
-		getUserProject = async (projectId) => {
+		getUserProject = async (userId) => {
 			const baseUrl = urls.base;
 			const url = urls.getUserProject;
-			let res = await fetch(baseUrl + url + projectId);
+			let res = await fetch(baseUrl + url + userId);
 			if (!res.ok) {
-				throw new Error(`Could not fetch ${url}${projectId}` +
+				throw new Error(`Could not fetch ${url}${userId}` +
 					`, received ${res.status}`);
 			} else {
 				const result = await res.json();

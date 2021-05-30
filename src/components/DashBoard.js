@@ -1,8 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import {useParams} from 'react-router-dom'
 import {Context} from './Context';
-import Navbar from './Navbar';
-import UsersTable from './UsersTable';
-import ProjectsTable from './ProjectsTable';
 import AddingForm from './AddingForm';
 import StatusList from './StatusList.js';
 import ProjectService from '../services/ProjectService';
@@ -12,19 +10,33 @@ import '../css/dashboard.min.css';
 
 
 export default function DashBoard (props) {
+	const {id} = useParams();
+	const {currentUser} = useContext(Context);
+	console.log("DASHBOARD RENDER")
 	const projectService = new ProjectService();
 	const taskService = new TaskService();
 	const userService = new UserService();
 
-	const [currentUser] = useState(props.currentUser);
 	const [tasks, setTasks] = useState([]);
-	const [project, setProject] = useState({});
+	const [project, setProject] = useState({})
 	const [users, setUsers] = useState([]);
 	const [taskIdToChange, setTaskIdToChange] = useState('');
-	const [showUsers, setShowUsers] = useState(false);
-	const [showProjects, setShowProjects] = useState(false);
-	const [showStatusList, setShowStatusList] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+
+
+	useEffect(async () => {
+		console.log("useEffect")
+		const projectId = id.slice(1);
+		const userProject = await projectService.getAllInformationAboutProject(projectId);
+		const allTasks = await taskService.getAllTasksByProjectId(projectId);
+		console.log(userProject);
+		console.log(allTasks);
+		console.log(userProject);
+		setProject(userProject);
+		setUsers(userProject.users);
+		setTasks(allTasks);
+	}, [tasks]);
+
 
 	const updateTask = async (newStatus) => {
 		try {
@@ -32,61 +44,32 @@ export default function DashBoard (props) {
 				"taskId": taskIdToChange,
 				"status": newStatus
 			};
-			const update = await taskService.taskStatusUpdate(data);
-			if (update) {
-				fetchTasks();
-			} else {
-				console.log("Error with updating tasks");
-				return;
-			}
+			return await taskService.taskStatusUpdate(data);
 		} catch (e) {
 			console.log(e);
 			console.log("Error with updating tasks");
 		}
 	}
 
-	const showProjectsTable = async () => {
-		const allProjects =  await projectService.getAllProjects();
-		setProject(allProjects);
-		setShowUsers(false);
-		setShowProjects(true);
-	}
 
-	const showUsersTable = async () => {
-		const allUsers = await userService.getAllUsers();
-		setUsers(allUsers);
-		setShowProjects(false)
-		setShowUsers(true);
-	}
 
-	const openStatusList = async (projectId) => {
-		try {
-			const project = await projectService.getAllInformationAboutProject(projectId);
-			const tasks = await taskService.getAllTasksByProjectId(projectId);
-			setProject(project);
-			setTasks(tasks);
-			setUsers(project.users);
-			setShowStatusList(true);
-		} catch(e) {
-			console.log(e);
-			console.log('OpenStatuList error');
-		}
-	}
+	// async function fetchTasks () {
+	// 	console.log("FETCH")
+	// 	try {
+	// 		const taskService = new TaskService();
+	// 		const tasks = await taskService.getAllTasksByProjectId(project.projectId);
+	// 		if (tasks) {
+	// 			setTasks(tasks);
+	// 		} else {
+	// 			return;
+	// 		}
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 		console.log("Error wit fetching tasks");
+	// 	}
+	// }
 
-	async function fetchTasks () {
-		try {
-			const taskService = new TaskService();
-			const tasks = await taskService.getAllTasksByProjectId(project.projectId);
-			if (tasks) {
-				setTasks(tasks);
-			} else {
-				return;
-			}
-		} catch (e) {
-			console.log(e);
-			console.log("Error wit fetching tasks");
-		}
-	}
+
 
 	const dragStartHandler = (e) => {
 		setTaskIdToChange(e.target.id);
@@ -110,7 +93,19 @@ export default function DashBoard (props) {
 		});
 		updateTask(newStatus);
 	}
+	const showMyTasks = async () => {
+		// const AllTasks = await taskService.getAllTasksByUserId(project.id, currentUser.id);
+		// console.log(AllTasks);
+		// setTasks(AllTasks);
+		console.log("showing my tasks")
+	}
 
+	const showAllTasks = async () => {
+		// const allTasks = await taskService.getAllTasksByProjectId(myProject.id);
+		// console.log(allTasks);
+		// setTasks(allTasks);
+		console.log("showing all tasks");
+	}
 	const openModal = () => {
 		setShowModal(true);
 	}
@@ -132,7 +127,6 @@ export default function DashBoard (props) {
 			const res = await taskService.postNewTask(addingData);
 			if (res) {
 				success.style.display = 'block';
-				fetchTasks();
 			} else {
 				error.style.display = 'block';
 			}
@@ -147,62 +141,47 @@ export default function DashBoard (props) {
 		}
 	}
 
-	const tasksToShow = currentUser.roleId === 3 
-	? tasks.filter(task => task.userId === currentUser.id)
-	: tasks;
-
 	let modalClassName;
 	showModal ? modalClassName = 'addingForm active' : modalClassName = 'addingForm';
 
 	let statusListProps = {
-		tasks: tasksToShow,
+		currentUser: currentUser,
+		tasks: tasks,
 		currentUser: currentUser,
 		project: project,
-		usersOnProject: users,
 		dragStartHandler:  (e) => dragStartHandler(e),
 		dropHandler: (e) => dropHandler(e),
 		dragOverHandler: (e) => dragOverHandler(e),
 		dragLeaveHandler: (e) => dragLeaveHandler(e)
 	}
-	const {logout} = props;
+
 	return (
 		<>
-			<Context.Provider value={{fetchTasks}}>
-				<Navbar 
-					showProjectsTable={() => showProjectsTable()}
-					showUsersTable={() => showUsersTable()}
-					openStatusList={(projectId) => openStatusList(projectId)}
-					currentUser={currentUser} logout={logout}/>
+			<Context.Provider value={{users}}>
 				<AddingForm
 					addTask={(title, userId) => addTask(title, userId)}
-					fetchTasks={() => fetchTasks()}
 					closeModal={() => closeModal()}
 					project={project}
 					modalClassName={modalClassName}
 					users={users}/>
-				<div className="container">
-					<div className="dashBoard">
-						<div className="dashBoard__btn">
-							<button 
-							type="button" 
-							className="btn btn-secondary"
-							onClick={() => openModal()}>NewTask</button>
-						</div>
-							<div className="dashBoard__wrapper">
-								{(showProjects && !showUsers) ? <ProjectsTable project={project}/> : null}
-								{(showUsers && !showProjects) ? <UsersTable users={users}/> : null}
-								{showStatusList
-								?	
-								<>
-									<StatusList key="1"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 1 }/>
-									<StatusList key="2"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 2 }/>
-									<StatusList key="3"  statusListProps={statusListProps} tasks={tasksToShow} statusId={ 3 }/>
-								</>
-								: null}
-
+					<div className="dashboard">
+						<div className="dashboard__sidebar">
+							<div className="dashboard__sidebar_btn" onClick={() => showMyTasks()}>
+								<p>My Tasks</p>
 							</div>
+							<div className="dashboard__sidebar_btn" onClick={() => showAllTasks()}>
+								<p>All Tasks</p>
+							</div>
+							<div className="dashboard__sidebar_btn" onClick={() => openModal()}>
+								<p>New Task</p>
+							</div>																													
 						</div>
-				</div>
+						<div className="dashboard__content">
+							<StatusList key="1"  statusListProps={statusListProps} statusId={ 1 }/>
+							<StatusList key="2"  statusListProps={statusListProps} statusId={ 2 }/>
+							<StatusList key="3"  statusListProps={statusListProps} statusId={ 3 }/>
+						</div>
+					</div>
 			</Context.Provider>
 		</>
 	)

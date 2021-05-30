@@ -1,6 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {Context} from './Context';
-import TaskService from '../services/TaskService';
+import React, {useState, useEffect} from 'react';
 import '../css/addingForm.min.css';
 
 export default function AddingForm (props) {
@@ -13,7 +11,7 @@ export default function AddingForm (props) {
 		if (props.users !== users) {
 			setUsers(props.users);
 		}
-	}, [props.users]);
+	}, [props.users, users]);
 
 	const onChangeHandler = (e) => {
 		setTitle(e.target.value);

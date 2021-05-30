@@ -12,7 +12,15 @@ export default class TaskService {
 		}
 		return await res.json();
 	}
-
+	getAllTasksByUserId = async (projectId, userId) => {
+		const baseUrl = urls.base;
+		let res = await fetch(baseUrl + '/Task/' + projectId + '/user/' + userId);
+		if (!res.ok) {
+			throw new Error(`Could not fetch your tasks` +
+				`, received ${res.status}`);
+		}
+		return await res.json();
+	}
 	editTask = async (data) => {
 		const baseUrl = urls.base;
 		const url = urls.editTask;
