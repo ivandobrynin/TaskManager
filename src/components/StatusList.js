@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import {Context} from '../components/Context';
 import '../css/statusList.min.css';
 import Task from './Task.js';
 
 export default function StatusList ({statusListProps, statusId}) {
-	const [currentUser] = useState(statusListProps.currentUser);
+
+	const {currentUser, users} = useContext(Context);
 	const [tasks, setTasks] = useState(statusListProps.tasks);
 	const [usersOnProject] = useState(statusListProps.usersOnProject);
-	
+
 	useEffect(() => {
-		console.log("2")
 		if (statusListProps.tasks !== tasks) {
 			setTasks(statusListProps.tasks);
 		}
-	}, [statusListProps.tasks, tasks]);
-
+	})
 
 	const dragStartHandler = (e) => {
 		statusListProps.dragStartHandler(e)
@@ -50,9 +50,7 @@ export default function StatusList ({statusListProps, statusId}) {
 		default:
 		return undefined;
 	}
-	const role = currentUser.roleId;
-	let showDeveloper;
-	role !== 3 ? showDeveloper = true : showDeveloper = false;
+	
 	return (
 		<div
 			onDragStart={(e) => dragStartHandler(e)}
@@ -66,8 +64,7 @@ export default function StatusList ({statusListProps, statusId}) {
 					return <Task 
 						key={task.id} 
 						task={task}
-						showDeveloper={showDeveloper}
-						usersOnProject={usersOnProject}/>
+						users={users}/>
 				})}
 		</div>
 	)
