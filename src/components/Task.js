@@ -7,10 +7,9 @@ import '../css/task.min.css';
 
 export default function Task (props) {
 	const {task} = props;
-	const {fetchTasks, users} = useContext(Context);
+	const {users, fetchTasks} = useContext(Context);
 
 	const [showMoreInformation, setShowMoreInformation] = useState(false);
-	const [taskHasBeenDeleted, setTaskHasBeenDeleted] = useState(false);
 	const [showTaskModalEdit, setShowTaskModalEdit] = useState(false);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -28,7 +27,8 @@ export default function Task (props) {
 	}
 
 	const showMore = (e) => {
-		const elem = e.target.parentNode.parentNode.parentNode;
+		const elem = e.target.parentNode.parentNode.parentNode.parentNode;
+		console.log(elem)
 		if (e.target.classList.contains('fa-arrow-down')) {
 			e.target.classList.remove('fa-arrow-down')
 			e.target.classList.add('fa-arrow-up');
@@ -65,7 +65,6 @@ export default function Task (props) {
 			const taskService = new TaskService();
 			const res =  await taskService.deleteTask(taskId);
 			if (res) {
-				setTaskHasBeenDeleted(true);
 				fetchTasks();
 			} else {
 				console.log("Что-то пошло не туда");
@@ -82,8 +81,8 @@ export default function Task (props) {
 	const userName = task.user ? task.user.firstName + ' ' + task.user.lastName : '';
 	let taskClassName = getClassName(task.status);
 	let taskText;
-	if (!showMoreInformation && task.title.length > 100) {
-		taskText = task.title.substring(0, 100) + '...';
+	if (!showMoreInformation && task.title.length > 45) {
+		taskText = task.title.substring(0, 45) + '...';
 	} else {
 		taskText = task.title
 	}
@@ -118,14 +117,7 @@ export default function Task (props) {
 				data-status={task.status}
 				className={taskClassName}>
 			<div className="task__text">
-				{taskHasBeenDeleted
-				? 
-				<div className="task__deleted">Task has been deleted</div> 
-				: 
-				<div className="task__title">{taskText}</div>}
-				<div className="task__arrow">
-					<i className="fa fa-arrow-down" aria-hidden="true" onClick={(e) => showMore(e)}></i>
-				</div>
+				<div className="task__title">{taskText}</div>
 			</div>
 			<div className="task__divider"></div>
 			<div className="task__info">
@@ -138,6 +130,9 @@ export default function Task (props) {
 					: null}
 				</div>
 				<div className="task__icons">
+					<div className="task__arrow">
+						<i className="fa fa-arrow-down" aria-hidden="true" onClick={(e) => showMore(e)}></i>
+					</div>
 					<div className="task__edit">
 						<i className="fa fa-pencil" data-id={task.id} data-status={task.status} onClick={() => openTaskModalEdit()} aria-hidden="true"></i>
 					</div>

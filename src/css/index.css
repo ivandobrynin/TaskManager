@@ -8,6 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -31,4 +32,45 @@ code {
   padding: 180px  30px;
 }
 
+.button__grey {
+  margin: 0 15px;
+  width: 70px;
+  height: 30px;
+  background-color: #808080;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  border: none;			
+  text-decoration: none;
+}
 
+.button__grey:hover {
+  background-color: black;
+}
+
+
+.link__grey {
+  margin: 0 15px;
+  display: flex;
+  width: 70px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  
+}
+.link__grey>a {
+  display: block;
+  width: 100px;
+  height: 30px;
+  background-color: #808080;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.link__grey:hover {
+  background-color: black;
+}

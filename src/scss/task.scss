@@ -5,15 +5,16 @@
     margin: 10px 0 10px;
     padding: 10px 10px;
     width: 100%;
-    height: 140px;
+    height: 100px;
     cursor: grab;
     background-color: #e9e9e9;
     &:hover {
         background-color: #dae8f5;
     }
     &__text {
+        padding-bottom: 5px;
         position: relative;
-        height: 90px;
+        height: 50px;
         z-index: 2;
     }
     &__title {
@@ -25,7 +26,7 @@
         height:30px;
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         z-index: 3;
     }
     &__divider {
@@ -50,7 +51,6 @@
     &__icons {
         height: 30px;
         display: flex;
-        justify-content: flex-end;
     }
     &__delete {
         height: 30px;
@@ -67,10 +67,12 @@
         }
     }
     &__arrow {
-        position: absolute;
-        bottom: 2px;
-        right: 8px;
+        height: 30px;
+        width: 30px;
         cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &:hover {
             i {
                 transform: scale(1.1);
@@ -92,17 +94,14 @@
             }
         }
     }
-    &__deleted {
-        color: red;
-    }
 }
 
 
 .task__increased {
     .task__text {
-        height: 140px;
+        height: 150px;
     }
-    height: 220px;
+    height: 200px;
 }
 .up {
     .task__arrow {

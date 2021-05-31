@@ -1,20 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import ProjectService from '../services/ProjectService';
-import '../css/projectsTable.min.css';
+import '../css/projectsPage.min.css';
 
 export default function ProjectTable() {
 	const projectService = new ProjectService();
 	const [allProjects, setAllProjects] = useState([])
 
-	useEffect(async () => {
-		const projects = await projectService.getAllProjects();
-		setAllProjects(projects);
+	useEffect(() => {
+		async function fn () {
+			const projects = await projectService.getAllProjects();
+			setAllProjects(projects);
+		}
+		fn();
 	}, []);
 
 
 	return (
-		<div className="projectsTable">
+		<div className="projectsPage">
 			<table className="table table-striped">
 				<thead>
 					<tr>
@@ -32,7 +35,7 @@ export default function ProjectTable() {
 							<td>{currentProject.id}</td>
 							<td>{currentProject.name}</td>
 							<td>
-								<div className="link">
+								<div className="projectsPage__link">
 									<Link to={`/dashboard/:${currentProject.id}`}>View</Link>
 								</div>
 							</td>

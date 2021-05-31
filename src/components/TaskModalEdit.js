@@ -4,8 +4,7 @@ import TaskService from '../services/TaskService';
 import '../css/taskModalEdit.min.css';
 
 export default function TaskModalEdit (props) {
-	const {users} = useContext(Context);
-	const {currentUser} = useContext(Context);
+	const {users, fetchTasks} = useContext(Context);
 
 	const [task, setTask] = useState(props.task);
 	const [title, setTitle] = useState(props.task.title);
@@ -33,6 +32,7 @@ export default function TaskModalEdit (props) {
 		const error = document.querySelector(".taskModalEdit__error");
 		const res = await service.editTask(data);
 		if (res) {
+			fetchTasks();
 			success.style.display = 'block';
 		} else {
 			error.style.display = 'block';
