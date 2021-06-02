@@ -15,14 +15,14 @@ export default function App () {
 	const userService = new UserService();
 
 	const [currentUser, setCurrentUser] = useState(null);
-	const [isChecked, setIsChecked] = useState(false);
+	const [userAuthenticated , setUserAuthenticated ] = useState(false);
 	const [loginFailed, setLoginFailed] = useState(false);
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem("currentUser"));
 		if (user) {
 			setCurrentUser(user);
-			setIsChecked(true);
+			setUserAuthenticated(true);
 			setLoginFailed(false);
 		}
 	}, []);
@@ -34,7 +34,7 @@ export default function App () {
 	const logout = () => {
 		localStorage.removeItem("currentUser");
 		setCurrentUser(null);
-		setIsChecked(false);
+		setUserAuthenticated(false);
 		setLoginFailed(false);
 	}
 	
@@ -42,7 +42,7 @@ export default function App () {
 		try {
 			const user = await userService.userLogin(data);
 			if (!user) {
-				setIsChecked(false);
+				setUserAuthenticated(false);
 				setLoginFailed(true);
 				return;
 			}
@@ -54,12 +54,12 @@ export default function App () {
 			}
 			localStorage.setItem("currentUser", JSON.stringify(userData));
 			setCurrentUser(userData);
-			setIsChecked(true);
+			setUserAuthenticated(true);
 			setLoginFailed(false);
 		} catch(e) {
 			console.log(e);
 			localStorage.removeItem("localData");
-			setIsChecked(false);
+			setUserAuthenticated(false);
 			setLoginFailed(true);
 		}
 	}
@@ -73,7 +73,7 @@ export default function App () {
 			<>
 				<Context.Provider value={{currentUser}}>
 					<Router>
-						{isChecked === true
+						{userAuthenticated
 						? <>
 							<Navbar
 								currentUser={currentUser} logout={logout}/>

@@ -3,10 +3,14 @@
 		border-bottom: 1px solid black;
 	}
 	&__right {
-		width: 240px;
+		width: 280px;
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
+		&_name {
+			color: #337ab7;
+			font-size: 18px;
+		}
 	}
 	&__link {
 		margin: 0 15px;

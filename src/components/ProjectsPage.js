@@ -1,18 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Link} from 'react-router-dom';
+import {Context} from '../components/Context';
 import ProjectService from '../services/ProjectService';
+import UserService from '../services/UserService';
 import '../css/projectsPage.min.css';
 
 export default function ProjectTable() {
+	const {currentUser} = useContext(Context);
+	const userService = new UserService();
 	const projectService = new ProjectService();
-	const [allProjects, setAllProjects] = useState([])
+	const [allProjects, setAllProjects] = useState([]);
 
 	useEffect(() => {
-		async function fn () {
-			const projects = await projectService.getAllProjects();
-			setAllProjects(projects);
+		if (currentUser) {
+			if (currentUser.roleId === 1) {
+				async function fn () {
+					const projects = await projectService.getAllProjects();
+					setAllProjects(projects);
+				}
+				fn();
+			} else {
+				async function fn () {
+					const projects = await userService.getUserProject(currentUser.id);
+					setAllProjects(projects.projects);
+				}
+				fn();
+			}
 		}
-		fn();
 	}, []);
 
 

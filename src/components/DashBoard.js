@@ -79,13 +79,33 @@ export default function DashBoard (props) {
 		});
 		updateTask(newStatus);
 	}
-	const showMyTasks = () => {
-		setTasks(tasks=> {
-			console.log(tasks);
-			const newTasks = tasks.filter(task=> task.userId === currentUser.id);
-			return newTasks;
-		});
-		console.log("showing my tasks")
+
+	const showMyTasks = (e) => {
+		const elem = e.target;
+		if (elem.classList.contains('dashboard__sidebar_btn')) {
+			const otherBtns = document.querySelectorAll('.dashboard__sidebar_btn');
+			otherBtns.forEach(btn => {
+				btn.classList.remove('active__link');
+			});
+		
+			elem.classList.add('active__link');
+			setTasks(tasks=> {
+				const newTasks = tasks.filter(task=> task.userId === currentUser.id);
+				return newTasks;
+			});
+		}
+	}
+
+	const showAllTasks = (e) => {
+		const elem = e.target;
+		if (elem.classList.contains('dashboard__sidebar_btn')) {
+			const otherBtns = document.querySelectorAll('.dashboard__sidebar_btn');
+			otherBtns.forEach(btn => {
+				btn.classList.remove('active__link');
+			});
+			elem.classList.add('active__link');
+			fetchTasks();
+		}
 	}
 
 	const openModal = () => {
@@ -150,14 +170,14 @@ export default function DashBoard (props) {
 							<div className="dashboard__sidebar_title">
 								{project.projectName}
 							</div>
-							<div className="dashboard__sidebar_btn" onClick={() => showMyTasks()}>
-								<p>My Tasks</p>
+							<div className="dashboard__sidebar_btn" onClick={(e) => showMyTasks(e)}>
+								My Tasks
 							</div>
-							<div className="dashboard__sidebar_btn" onClick={() => fetchTasks()}>
-								<p>All Tasks</p>
+							<div className="dashboard__sidebar_btn" onClick={(e) => showAllTasks(e)}>
+								All Tasks
 							</div>
 							<div className="dashboard__sidebar_btn" onClick={() => openModal()}>
-								<p>New Task</p>
+								New Task
 							</div>																													
 						</div>
 						<div className="dashboard__content">

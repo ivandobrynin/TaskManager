@@ -69,9 +69,7 @@ export default function Task (props) {
 			} else {
 				console.log("Что-то пошло не туда");
 			}
-			setTimeout(() => {
-				closeConfirm();
-			}, 500)
+			closeConfirm();
 		} catch (e) {
 			console.log(e);
 			console.log("Error with deleting task");

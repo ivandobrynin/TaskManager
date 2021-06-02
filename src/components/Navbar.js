@@ -21,9 +21,9 @@ export default function Navbar(props) {
 							<li className="nav-item navbar__link">
 								<Link to="/">Home</Link>
 							</li>
-							<li className="nav-item navbar__link">
+							{/* <li className="nav-item navbar__link">
 								<Link to={`/dashboard/:${id}`}>Board</Link>
-							</li>
+							</li> */}
 							<li className="nav-item navbar__link">
 								<Link to="/projects">Projects</Link>
 							</li>

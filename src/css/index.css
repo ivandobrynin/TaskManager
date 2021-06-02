@@ -74,3 +74,8 @@ code {
 .link__grey:hover {
   background-color: black;
 }
+
+.active__link {
+  color: white;
+  background-color: rgb(72, 84, 241);
+}
