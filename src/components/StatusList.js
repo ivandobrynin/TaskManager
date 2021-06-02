@@ -5,15 +5,14 @@ import Task from './Task.js';
 
 export default function StatusList ({statusListProps, statusId}) {
 
-	const {currentUser, users} = useContext(Context);
+	const {users} = useContext(Context);
 	const [tasks, setTasks] = useState(statusListProps.tasks);
-	const [usersOnProject] = useState(statusListProps.usersOnProject);
 
 	useEffect(() => {
 		if (statusListProps.tasks !== tasks) {
 			setTasks(statusListProps.tasks);
 		}
-	})
+	}, [statusListProps.tasks, tasks]);
 
 	const dragStartHandler = (e) => {
 		statusListProps.dragStartHandler(e)

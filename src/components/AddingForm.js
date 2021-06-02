@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import '../css/addingForm.min.css';
 
 export default function AddingForm (props) {
-	
 	const [users, setUsers] = useState(props.users);
 	const [title, setTitle] = useState('');
 	const [userId, setUserId] = useState(null);

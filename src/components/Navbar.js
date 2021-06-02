@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import AdminButton from '../components/AdminButton';
-import ProjectsButton from '../components/ProjectsButton';
+import {Context} from '../components/Context';
+import '../css/navbar.min.css';
 
 export default function Navbar(props) {
+	let id;
 
-	const [currentUser] = useState(props.currentUser);
-	
+	const {currentUser} = useContext(Context);
 	const {logout} = props;
 	return (
 		<>
-			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+			<nav className="navbar navbar-expand-lg navbar-light bg-light navbar__border">
 				<div className="container-fluid">
 					<div className="navbar-brand">ZM</div>
 					<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,21 +18,26 @@ export default function Navbar(props) {
 					</button>
 					<div className="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-							<li className="nav-item">
+							<li className="nav-item navbar__link">
 								<Link to="/">Home</Link>
 							</li>
-							<li className="nav-item">
-								<a className="nav-link" href="#">Link</a>
+							{/* <li className="nav-item navbar__link">
+								<Link to={`/dashboard/:${id}`}>Board</Link>
+							</li> */}
+							<li className="nav-item navbar__link">
+								<Link to="/projects">Projects</Link>
 							</li>
-							<AdminButton/>
-							{/* {currentUser?.roleId === 1
-							? 
-								<AdminButton/>
-							:
-								<ProjectsButton/>} */}
+							<li className="nav-item navbar__link">
+								<Link to="/users">Users</Link>
+							</li>
 						</ul>
-						<button type="button" className="btn btn-secondary"
-						onClick={logout}>Logout</button>
+						<div className="navbar__right">
+							<div className="navbar__right_name">{currentUser.firstName + ' ' + currentUser.lastName}</div>
+							<div className="navbar__right_btn ">
+								<button type="button" className="button__grey"
+									onClick={logout}>Logout</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</nav>

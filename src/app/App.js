@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {Context} from '../components/Context';
-import ProjectService from '../services/ProjectService';
 import UserService from '../services/UserService';
-import TaskService from '../services/TaskService';
 import LoginScreen from '../components/LoginScreen';
 import HomePage from '../components/HomePage';
 import ProjectsPage from '../components/ProjectsPage';
@@ -15,18 +13,16 @@ import '../css/index.css';
 
 export default function App () {
 	const userService = new UserService();
-	const projectService = new ProjectService();
-	const taskService = new TaskService();
 
 	const [currentUser, setCurrentUser] = useState(null);
-	const [isChecked, setIsChecked] = useState(false);
+	const [userAuthenticated , setUserAuthenticated ] = useState(false);
 	const [loginFailed, setLoginFailed] = useState(false);
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem("currentUser"));
 		if (user) {
 			setCurrentUser(user);
-			setIsChecked(true);
+			setUserAuthenticated(true);
 			setLoginFailed(false);
 		}
 	}, []);
@@ -38,7 +34,7 @@ export default function App () {
 	const logout = () => {
 		localStorage.removeItem("currentUser");
 		setCurrentUser(null);
-		setIsChecked(false);
+		setUserAuthenticated(false);
 		setLoginFailed(false);
 	}
 	
@@ -46,7 +42,7 @@ export default function App () {
 		try {
 			const user = await userService.userLogin(data);
 			if (!user) {
-				setIsChecked(false);
+				setUserAuthenticated(false);
 				setLoginFailed(true);
 				return;
 			}
@@ -58,12 +54,12 @@ export default function App () {
 			}
 			localStorage.setItem("currentUser", JSON.stringify(userData));
 			setCurrentUser(userData);
-			setIsChecked(true);
+			setUserAuthenticated(true);
 			setLoginFailed(false);
 		} catch(e) {
 			console.log(e);
 			localStorage.removeItem("localData");
-			setIsChecked(false);
+			setUserAuthenticated(false);
 			setLoginFailed(true);
 		}
 	}
@@ -77,7 +73,7 @@ export default function App () {
 			<>
 				<Context.Provider value={{currentUser}}>
 					<Router>
-						{isChecked === true
+						{userAuthenticated
 						? <>
 							<Navbar
 								currentUser={currentUser} logout={logout}/>

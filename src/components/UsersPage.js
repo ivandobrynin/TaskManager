@@ -25,7 +25,6 @@ export default function UsersTable() {
 					<th scope="col">First Name</th>
 					<th scope="col">LastName</th>
 					<th scope="col">Role Id</th>
-					<th scope="col">Show Tasks</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -38,10 +37,10 @@ export default function UsersTable() {
 							<td>{user.lastName}</td>
 							<td>{user.roleId}</td>
 							<td>
-							<button
+							{/* <button
 								// onClick={() => openAssignModal()}
 								type="button" 
-								className="btn btn-primary btn-sm">View</button>
+								className="btn btn-primary btn-sm">View</button> */}
 							</td>
 						</tr>
 					)

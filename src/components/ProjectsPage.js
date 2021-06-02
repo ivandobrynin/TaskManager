@@ -1,20 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Link} from 'react-router-dom';
+import {Context} from '../components/Context';
 import ProjectService from '../services/ProjectService';
-import '../css/projectsTable.min.css';
+import UserService from '../services/UserService';
+import '../css/projectsPage.min.css';
 
 export default function ProjectTable() {
+	const {currentUser} = useContext(Context);
+	const userService = new UserService();
 	const projectService = new ProjectService();
-	const [allProjects, setAllProjects] = useState([])
+	const [allProjects, setAllProjects] = useState([]);
 
-	useEffect(async () => {
-		const projects = await projectService.getAllProjects();
-		setAllProjects(projects);
+	useEffect(() => {
+		if (currentUser) {
+			if (currentUser.roleId === 1) {
+				async function fn () {
+					const projects = await projectService.getAllProjects();
+					setAllProjects(projects);
+				}
+				fn();
+			} else {
+				async function fn () {
+					const projects = await userService.getUserProject(currentUser.id);
+					setAllProjects(projects.projects);
+				}
+				fn();
+			}
+		}
 	}, []);
 
 
 	return (
-		<div className="projectsTable">
+		<div className="projectsPage">
 			<table className="table table-striped">
 				<thead>
 					<tr>
@@ -32,7 +49,7 @@ export default function ProjectTable() {
 							<td>{currentProject.id}</td>
 							<td>{currentProject.name}</td>
 							<td>
-								<div className="link">
+								<div className="projectsPage__link">
 									<Link to={`/dashboard/:${currentProject.id}`}>View</Link>
 								</div>
 							</td>

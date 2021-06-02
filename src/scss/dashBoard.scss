@@ -10,15 +10,19 @@
         background-color: #e9e6e6;
         width: 300px;
         height: 100vh;
+        border-right: 1px solid black;
+        &_title {
+            color: #337ab7;
+            font-size: 22px;
+        }
         &_btn {
             padding: 10px 10px;
             display: flex;
             justify-content: center;
-            height: 50px;
+            height: 45px;
             width: 100%;
             &:hover {
                 cursor: pointer;
-                background-color: #8d8d8d;
             }
         }
     }
