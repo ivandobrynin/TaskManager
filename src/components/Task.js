@@ -28,14 +28,13 @@ export default function Task (props) {
 
 	const showMore = (e) => {
 		const elem = e.target.parentNode.parentNode.parentNode.parentNode;
-		console.log(elem)
 		if (e.target.classList.contains('fa-arrow-down')) {
 			e.target.classList.remove('fa-arrow-down')
 			e.target.classList.add('fa-arrow-up');
 			elem.classList.add('task__increased');
 			setShowMoreInformation(true);
 		} else {
-				e.target.classList.remove('fa-arrow-up')
+			e.target.classList.remove('fa-arrow-up')
 			e.target.classList.add('fa-arrow-down');
 			elem.classList.remove('task__increased');
 			setShowMoreInformation(false);
